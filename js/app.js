@@ -5,6 +5,10 @@ btnSearch.addEventListener('click', (e) => {
     const cityName = document.getElementById('input-city').value;
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
 
+    if (!cityName) {
+        return;
+    }
+
     fetch(apiUrl)
         .then(res => res.json())
         .then(data => displayWeatherInfo(data));
@@ -19,9 +23,9 @@ const displayWeatherInfo = (data) => {
     console.log(data);
     const weatherIconSrc = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     weatherIcon.setAttribute('src', weatherIconSrc);
-    city.innerText = data.name;
+    city.innerText = `${data.name}, ${data.sys.country}`;
     const tempData = ((data.main.temp) / 10).toFixed(2);
-    temp.innerText = tempData;
+    temp.innerHTML = `${tempData}<span>&deg;C</span>`;
     weather.innerText = data.weather[0].main;
 
 }
